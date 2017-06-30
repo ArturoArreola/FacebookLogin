@@ -1,0 +1,14 @@
+<plugin name='facebook-sdk' version='2.3.0' grailsVersion='2.0 &gt; *'>
+  <author>Benoit Hediard</author>
+  <authorEmail>ben@agorapulse.com</authorEmail>
+  <title>Facebook SDK Plugin</title>
+  <description>The Facebook SDK Plugin allows your Grails application to use the Facebook Platform and develop Facebook apps on Facebook.com or on web sites (with Facebook Connect).
+It is a port of the official Facebook PHP SDK to Grails 2.0.
+</description>
+  <documentation>http://agorapulse.github.io/grails-facebook-sdk/guide/</documentation>
+  <type>FacebookSdkGrailsPlugin</type>
+  <resources>
+    <resource>facebook.sdk.FacebookSdkController</resource>
+    <resource>grails.plugin.facebooksdk.FacebookJSTagLib</resource>
+  </resources>
+</plugin>

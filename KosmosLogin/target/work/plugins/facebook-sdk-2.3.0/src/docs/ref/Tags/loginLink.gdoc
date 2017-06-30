@@ -1,0 +1,48 @@
+h1. facebook:loginLink
+
+Display a link to open "OAuth Dialog":https://developers.facebook.com/docs/reference/dialogs/oauth/ .
+
+!https://developers.facebook.com/attachment/auth-web-mobileweb.jpg!
+
+The *OAuth Dialog* is used within the authentication flows to enable a user to authorize your application and to grant additional permissions to your app. Facebook's authentication flows are based on the OAuth 2.0 protocol.
+
+{code}
+<facebook:loginLink appPermissions="${facebookContext.app.permissions}">Login</facebook:loginLink>
+{code}
+
+To handle callback yourself, you can use @callback@ attribute.
+
+{code}
+<script>
+    function someCallbackFunction(response) {
+        alert('callback called!');
+        console.log(response);
+    }
+</script>
+
+<facebook:loginLink
+    appPermissions="${facebookContext.app.permissions}"
+    callback="someCallbackFunction">
+    Login
+</facebook:loginLink>
+{code}
+
+h3. Attributes
+
+Optional attributes are :
+* @callback@ Optional javascript function name to call when dialog is confirmed or closed.
+* @appPermissions@ Facebook app permissions/scope.
+* @cancelUrl@ Cancel URL for redirect if login is canceled (if not defined, nothing happens).
+* @elementClass@ HTML element @class@ attribute value.
+* @elementId@ HTML element @id@ attribute value.
+* @returnUrl@ Return URL for redirect after login (if not defined page will be reloaded).
+
+h3.XFBML login button
+
+You might also use Facebook JS SDK "Login button":http://developers.facebook.com/docs/reference/plugins/login/ (but do not forget to set @xfbml@ attributes to true in @facebook:init@ tag).
+
+{code:xml}
+<html xmlns:fb="http://ogp.me/ns/fb#">
+...
+<fb:login-button scope="${facebook.app.permissions}"></fb:login-button>
+{code}

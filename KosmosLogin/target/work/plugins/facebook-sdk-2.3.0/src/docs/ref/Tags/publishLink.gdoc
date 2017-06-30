@@ -1,0 +1,42 @@
+h1. facebook:publishLink
+
+Display a link to open "Feed Dialog":https://developers.facebook.com/docs/reference/dialogs/feed/ .
+
+!https://developers.facebook.com/attachment/Feed%20Dialog.png!
+
+The *Feed Dialog* prompts the user to publish an individual story to a profile's feed. This does not require any extended permissions.
+
+{code}
+<facebook:publishLink>Publish</facebook:publishLink>
+{code}
+
+To check if the app was successfully added or execute some code, you can use @callback@ attribute.
+
+{code}
+<script>
+    function someCallbackFunction(response) {
+        alert('callback called!');
+        console.log(response);
+    }
+</script>
+
+<facebook:publishLink
+    callback="someCallbackFunction">
+    Publish
+</facebook:publishLink>
+{code}
+
+h3. Attributes
+
+Optional attributes are :
+* @callback@ Optional javascript function name to call when dialog is confirmed or closed.
+* @disabled@ Disable click on the link.
+* @display@ Display mode in which to render the Dialog. Can be page (default for web), touch (default for mobile), popup or iframe.
+* @caption@ The caption of the link (appears beneath the link name). If not specified, this field is automatically populated with the URL of the link.
+* @description@ The description of the link (appears beneath the link caption). If not specified, this field is automatically populated by information scraped from the link, typically the title of the page.
+* @elementClass@ HTML element 'class' attribute value.
+* @elementId@ HTML element 'id' attribute value.
+* @link@ The link attached to this post.
+* @name@ The name of the link attachment.
+* @picture@ The URL of a picture attached to this post. The picture must be at least 50px by 50px and have a maximum aspect ratio of 3:1.
+* @source@ The URL of a media file (either SWF or MP3) attached to this post. If both source and picture are specified, only source is used.

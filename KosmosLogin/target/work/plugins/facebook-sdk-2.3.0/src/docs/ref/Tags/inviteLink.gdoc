@@ -1,0 +1,46 @@
+h1. facebook:inviteLink
+
+Display a link to open "Request Dialog":https://developers.facebook.com/docs/reference/dialogs/requests/ .
+
+!https://developers.facebook.com/attachment/multi_request_dialog.png!
+
+The *Request Dialog* sends a Request from one user (the sender) to one or more users (the recipients). The Request Dialog can be used to send a Request directly from one user to another or display a Multi Friend Selector Dialog, allowing the sending user to select multiple recipient users.
+
+{code}
+<facebook:inviteLink message="Check this app!">Invite your friends</facebook:inviteLink>
+{code}
+
+To check if the app was successfully added or execute some code, you can use @callback@ attribute.
+
+{code}
+<script>
+    function someCallbackFunction(response) {
+        alert('callback called!');
+        console.log(response);
+    }
+</script>
+
+<facebook:inviteLink
+    callback="someCallbackFunction"
+    message="Check this app!">
+    Invite your friends
+</facebook:inviteLink>
+{code}
+
+h3. Attributes
+
+Required attribute is :
+* @message@ The Request string the receiving user will see. The maximum length is 60 characters.
+
+Optional attributes are :
+* @callback@ Optional javascript function name to call when dialog is confirmed or closed.
+* @data@ Additional data you may pass for tracking. The maximum length is 255 characters.
+* @disabled@ Disable click on the link.
+* @display@ Display mode in which to render the Dialog. Can be page (default for web), touch (default for mobile), popup or iframe.
+* @elementClass@ HTML element @class@ attribute value.
+* @elementId@ HTML element @id@ attribute value.
+* @excludeIds@ List of of user IDs that will be excluded from the Dialog.
+* @filters@ List of filters to apply. Can be 'all', 'app_users' and 'app_non_users'.
+* @maxRecipients@ An integer that specifies the maximum number of friends that can be chosen.
+* @title@ The title for the Dialog. Maximum length is 50 characters.
+* @to@ A user ID or username.

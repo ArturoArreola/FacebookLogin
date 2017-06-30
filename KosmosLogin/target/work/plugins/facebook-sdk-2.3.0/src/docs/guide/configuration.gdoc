@@ -1,0 +1,160 @@
+h3. Installation
+
+Declare the plugin dependency in @BuildConfig.groovy@ file, as shown here:
+
+{code}
+grails.project.dependency.resolution = {
+		inherits("global") { }
+		log "info"
+		repositories {
+				//your repositories
+		}
+		dependencies {
+				//your regular dependencies
+		}
+		plugins {
+				//here go your plugin dependencies
+				runtime ':facebook-sdk:2.3.0'
+		}
+}
+{code}
+
+
+h3. Single Facebook app
+
+Create a Facebook app on "Facebook Developers":https://developers.facebook.com/apps , in order to get your own app ID and app secret.
+
+Add your app settings in @Config.groovy@:
+
+{code}
+// Required
+grails.plugin.facebooksdk.app.id = {APP_ID}
+grails.plugin.facebooksdk.app.permissions = {APP_PERMISSIONS} // Ex. ['email','user_photos']
+grails.plugin.facebooksdk.app.secret = {APP_SECRET}
+// Optional, default proxy config for Facebook Graph Client API calls
+// grails.plugin.facebooksdk.proxyHost = {PROXY_HOST}
+// grails.plugin.facebooksdk.proxyPort = {PROXY_PORT}
+{code}
+
+Or
+
+{code}
+grails {
+    plugin {
+        facebooksdk {
+            app = [
+                id: APP_ID,
+                permissions: APP_PERMISSIONS,
+                secret: APP_SECRET
+            ]
+        }
+    }
+}
+{code}
+
+
+h3. Multiple Facebook apps
+
+Since V0.4, it is possible do define multiple apps in @Config.groovy@:
+
+{code}
+grails {
+    plugin {
+        facebooksdk {
+            appIdParamName = 'app_id' // Default app selection param name
+            apps = [
+                [
+                    id: {APP_ID1},
+                    permissions: {APP_PERMISSIONS1}, // Ex. ['email','user_photos']
+                    secret: {APP_SECRET1}
+                ],
+                [
+                    id: {APP_ID2},
+                    permissions: {APP_PERMISSIONS2}, // Ex. ['email','user_photos']
+                    secret: {APP_SECRET2}
+                ],
+                ...
+            ]
+        }
+    }
+}
+{code}
+
+
+For each request, you must define @app_id@ in @params@ (by appending @?app_id={APP_ID}@ to query string) in order to specify which Facebook app setting to use.
+
+Note: to define another parameter name, set config param @grails.plugin.facebooksdk.appIdParamName@.
+
+You can also associate a Facebook app to a default controller by adding controller name in each app settings :
+
+{code}
+grails {
+    plugin {
+        facebooksdk {
+            apps = [
+                [
+                    controller: {CONTROLLER_NAME1},
+                    id: {APP_ID1},
+                    permissions: {APP_PERMISSIONS1},
+                    secret: {APP_SECRET1}
+                ],
+                [
+                    controller: {CONTROLLER_NAME2},
+                    id: {APP_ID2},
+                    permissions: {APP_PERMISSIONS2},
+                    secret: {APP_SECRET2}
+                ],
+                ...
+            ]
+        }
+    }
+}
+{code}
+
+For example, let's say you have two apps with two controllers: @QuizController@ and @SweepstakesController@.
+
+Add @controller: 'quiz'@ in quiz app settings and @controller: 'sweepstakes'@ in sweepstakes app settings.
+
+To access your quiz app, use http://localhost:8080/my-app/*quiz* .
+
+To access your sweepstakes app, use http://localhost:8080/my-app/*sweepstakes* .
+
+If no app is found based on @app_id@ params and controller name, default single app @grails.plugin.facebooksdk.app@ settings will be used (if defined).
+
+
+h3. Graph API Version
+
+By default, latest Graph API v2.3 will be used.
+You can override default settings with @apiVersion@ config parameter :
+
+{code}
+grails.plugin.facebooksdk.apiVersion = 'v2.2'
+{code}
+
+
+h3. Session replication and authorization code
+
+When using distributed session replication, if authorization code is used by two concurrent processes, one of the process will received an error from Facebook and the session will be invalidated.
+You can add the @tokenRetrievalRetryCount@ config parameter to try to extract token from session several times before invalidating the session (the time for the first process to put the token received by Facebook into session scope).
+
+{code}
+grails.plugin.facebooksdk.tokenRetrievalRetryCount = 10
+{code}
+
+By default, this parameter is usually not required and is disabled by default.
+
+h3. Controllers scope
+
+Since FacebookContext should be instantiated at each request, you must use @prototype@ scope for your Controllers (since Grails 2.3, generated Config.groovy defines @singleton@ as default scope).
+
+{code}
+grails.controllers.defaultScope = 'prototype'
+{code}
+
+h3. JQuery custom selector
+
+Default jQuery selector is @$@, if you require another one, you can define it globally in your _grails-app/conf/Config.groovy_:
+
+{code}
+grails.plugin.facebooksdk.customSelector = 'jQuery'
+{code}
